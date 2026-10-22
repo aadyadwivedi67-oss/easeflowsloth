@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="EaseFlow turns messy to-do lists into simple, actionable plans with open-source AI.">
+  <title>EaseFlow — Make room for what matters</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="#" class="brand">
+        <span class="brand-icon">e.</span>
+        <span>easeflow<span class="brand-dot">.</span></span>
+      </a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <button class="nav-item active" data-view="all">
+        <span>▦</span> My tasks <span class="nav-count" id="navCount">0</span>
+      </button>
+      <button class="nav-item" data-view="today">
+        <span>◷</span> Today
+      </button>
+      <button class="nav-item" data-view="completed">
+        <span>✓</span> Completed
+      </button>
+
+      <div class="sidebar-bottom">
+        <div class="focus-card">
+          <span class="focus-spark">✳</span>
+          <p class="focus-title">A little progress counts.</p>
+          <p class="focus-text">You don't have to do everything today. Just start somewhere.</p>
+        </div>
+        <div class="local-status">
+          <span class="status-dot"></span>
+          <span id="aiStatus">AI is ready when you are</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="dateLabel">YOUR PERSONAL WORKSPACE</p>
+          <h1>Make room for <span>what matters.</span></h1>
+          <p class="subtitle">Get it out of your head. We'll help you sort it out.</p>
+        </div>
+        <div class="avatar">E</div>
+      </header>
+
+      <section class="welcome-strip">
+        <div class="welcome-copy">
+          <span class="mini-label">YOUR SPACE, YOUR PACE</span>
+          <h2>Less overwhelm.<br>More <em>getting there.</em></h2>
+          <p>One thought at a time is more than enough.</p>
+        </div>
+        <div class="welcome-art" aria-hidden="true">
+          <div class="art-circle"></div>
+          <div class="art-sheet">
+            <span class="art-check">✓</span>
+            <span class="art-line long"></span>
+            <span class="art-check">✓</span>
+            <span class="art-line medium"></span>
+            <span class="art-empty"></span>
+            <span class="art-line short"></span>
+          </div>
+          <span class="art-star star-one">✳</span>
+          <span class="art-star star-two">✦</span>
+        </div>
+      </section>
+
+      <section class="composer panel">
+        <div class="section-heading">
+          <div>
+            <span class="step-label">01 / EMPTY YOUR MIND</span>
+            <h2>What's on your mind?</h2>
+          </div>
+          <span class="soft-tag">Brain dump</span>
+        </div>
+        <p class="muted">Write everything down. Messy is perfectly fine.</p>
+        <textarea id="brainDump" rows="5" placeholder="Need to finish my assignment, reply to that email, buy groceries, prepare for Friday's test..."></textarea>
+        <div class="composer-footer">
+          <span class="privacy-note"><span class="tiny-lock">●</span> Processed in your browser</span>
+          <button class="primary-button" id="organizeBtn">
+            <span>✳</span> Organize my tasks <span>→</span>
+          </button>
+        </div>
+        <p id="errorMessage" class="error-message" role="alert" hidden></p>
+      </section>
+
+      <section class="task-section">
+        <div class="section-heading task-heading">
+          <div>
+            <span class="step-label">02 / YOUR PLAN</span>
+            <h2 id="listHeading">Your tasks <span class="heading-count" id="headingCount">0</span></h2>
+          </div>
+          <button class="text-button" id="clearCompletedBtn">Clear completed</button>
+        </div>
+
+        <div class="progress-panel panel">
+          <div class="progress-copy">
+            <span>YOUR MOMENTUM</span>
+            <strong id="progressText">You're just getting started.</strong>
+          </div>
+          <div class="progress-number" id="progressNumber">0%</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <button class="filter-chip selected" data-filter="all">All tasks</button>
+          <button class="filter-chip" data-filter="high">High priority</button>
+          <button class="filter-chip" data-filter="medium">Medium</button>
+          <button class="filter-chip" data-filter="low">Low priority</button>
+        </div>
+
+        <div id="taskList" class="task-list">
+          <div class="empty-state">
+            <div class="empty-illustration">
+              <span class="empty-sun">✳</span>
+              <div class="empty-paper">
+                <span>✓</span><span>—</span>
+                <span>○</span><span>—</span>
+                <span>○</span><span>—</span>
+              </div>
+            </div>
+            <h3>A fresh start feels good.</h3>
+            <p>Drop your to-dos above and let EaseFlow help you find a starting point.</p>
+          </div>
+        </div>
+
+        <button class="secondary-button add-button" id="addTaskBtn">+ Add a task manually</button>
+      </section>
+
+      <footer class="footer">
+        <span>Made for a calmer kind of productivity.</span>
+        <span>Open source, by design.</span>
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="taskDialog" class="task-dialog">
+    <form id="taskForm">
+      <div class="dialog-header">
+        <h2>Add a task</h2>
+        <button type="button" id="closeDialogBtn" class="icon-button" aria-label="Close">×</button>
+      </div>
+      <label for="taskTitle">Task name</label>
+      <input id="taskTitle" maxlength="180" required placeholder="What needs to get done?">
+      <label for="taskPriority">Priority</label>
+      <select id="taskPriority">
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+        <option value="low">Low</option>
+      </select>
+      <label for="taskCategory">Category</label>
+      <select id="taskCategory">
+        <option value="Personal">Personal</option>
+        <option value="Study">Study</option>
+        <option value="Work">Work</option>
+        <option value="Errands">Errands</option>
+        <option value="Other">Other</option>
+      </select>
+      <button class="primary-button dialog-submit" type="submit">Add to my list →</button>
+    </form>
+  </dialog>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
