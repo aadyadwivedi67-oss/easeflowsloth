@@ -43,11 +43,11 @@ easeflow/
 If you publish the project on GitHub, clone it using:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/easeflow.git
+git clone https://github.com/aadyadwivedi67-oss/easeflow.git
 cd easeflow
 ```
 
-Replace YOUR_USERNAME with your GitHub username.
+Replace aadyadwivedi67-oss with your GitHub username.
 
 Alternatively, create the four files listed above manually.
 
